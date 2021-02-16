@@ -132,3 +132,85 @@ Dans l'inspecteur du navigateur, il est bien visible que nous avons un shadow-ro
 </user-card>
 ```
 
+## Les Slots
+
+dans le template on ajoute un tag `<img>` et une div pour wrapper des infos et un bouton + du style.
+```js
+template.innerHTML = `
+<style>
+    h3 {
+        color: coral;
+    }
+    .user-card {
+        margin: 2rem 1rem;
+        padding: 1rem .5rem;
+        border: 1px solid #000;
+        text-align: center;
+        width: 20rem;
+    }
+</style>
+<div class="user-card">
+    <img/>
+    <div>
+        <h3></h3>
+        <div class="info">
+            <p>Email :</p>
+            <p>Phone :</p>
+        </div>
+        <button id="toggle-info">Masquer les infos</button>
+    </div>
+</div>
+`;
+```
+On peut ainsi faire passer des infos par le biais de l'utilisation des slots.
+Dans le html il faut créer dans le composant des div avec l'attribut slot:
+```html
+...
+<div slot="email">john@gmail.com</div>
+<div slot="phone">06 00 00 00 00</div>
+...
+```
+```js
+template.innerHtml = `
+    ...
+    <div class="user-card">
+        <img/>
+        <div>
+            <h3></h3>
+            <div class="info">
+                <p><slot name="email" /></p>
+                <p><slot name="phone" /></p>
+            </div>
+            <button id="toggle-info">Masquer les infos</button>
+        </div>
+    </div>
+    ...
+`;
+```
+## Les events
+
+### lifecycle hooks
+
+A partir du moment où le custom element est créé jsqu'au moment où il est détruit, plusieurs choses peuvent se passer entre ces deux étapes.
+<ol>
+    <li>l'élément est inséré dans le DOM.</li>
+    <li>Il est mis à jour par un ou plusieurs évènements.</li>
+    <li>L' élément est peurt être effacé du DOM.</li>
+</ol>
+
+
+Tous les étapes ci-dessus sont appelées le `cycle de vie de l’élément`, et on peut se connecter aux événements clés de sa vie avec un certain nombre de fonctions de rappel, appelées : <u>Custom Element Reactions</u>
+
+Les `Custom Element Reactions sont appelées` avec une attention particulère` afin d'éviter que le code ne soit exécuté au milieu d'un autre processus.` 
+
+Elles sont donc retardées jusqu'à ce que toutes les étapes intermédiares soient executées. Elles semblent donc être exécutée de manière synchrone. Afin de garantir que les hooks soient appelés dans le même ordre que leur déclencheur, `chaque Custom Element bénéficie d'une file d'attente dédiée`.
+
+On a alors pas besoin d'inventer un systeme pour constuire et déconstruire des éléments. Ceci est supoorté de manièere native par les navigateurs.
+
+`connectedCallback` est appelé lorsque l'élément personnalisé est connecté pour la première fois au DOM du document.
+
+`disconnectedCallback ` est appelé lorsque l'élément personnalisé est déconnecté du DOM du document.
+
+
+
+

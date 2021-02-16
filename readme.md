@@ -9,6 +9,7 @@ lier ce template a un fichier javascript dans lequel on construit une Class pour
 class UserCard extends HTMLElement {
     constructor(){
         // apppel le contructeur de la class parente
+        super();
     }
 }
 ```
